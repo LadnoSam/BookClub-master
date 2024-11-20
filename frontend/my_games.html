@@ -1,0 +1,32 @@
+{% extends 'main/base.html' %}
+
+{% block title %}My Board Games{% endblock %}
+
+{% block content %}
+<h1>My Board Games</h1>
+<a class="btn btn-success mb-3" href="{% url 'add_game' %}">Add New Game</a>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Characteristics</th>
+            <th>Last Updated</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for game in games %}
+            <tr>
+                <td>{{ game.name }}</td>
+                <td>{{ game.description }}</td>
+                <td>{{ game.characteristics }}</td>
+                <td>{{ game.updated_at }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="4" class="text-center">You have not added any games yet.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
