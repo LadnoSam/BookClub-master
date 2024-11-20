@@ -1,0 +1,33 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Available Board Games{% endblock %}
+
+{% block content %}
+<h1>Available Board Games</h1>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Characteristics</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for game in games %}
+            <tr>
+                <td>{{ game.name }}</td>
+                <td>{{ game.description }}</td>
+                <td>{{ game.characteristics }}</td>
+                <td>
+                    {% if game.is_available %}
+                        <a class="btn btn-primary btn-sm" href="{% url 'borrow_game' game.id %}">Borrow</a>
+                    {% else %}
+                        <button class="btn btn-secondary btn-sm" disabled>Unavailable</button>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
