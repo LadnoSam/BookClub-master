@@ -32,15 +32,15 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Book',
+            name='Boardgame',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(db_index=True, max_length=200)),
                 ('subtitle', models.CharField(blank=True, max_length=200)),
                 ('description', models.TextField(max_length=1000, null=True)),
                 ('pub_year', models.PositiveSmallIntegerField(null=True, verbose_name='Publication Year')),
-                ('author', models.ManyToManyField(to='books.Author')),
-                ('genre', models.ManyToManyField(to='books.Genre')),
+                ('author', models.ManyToManyField(to='BoardGames.Author')),
+                ('genre', models.ManyToManyField(to='BoardGames.Genre')),
             ],
         ),
     ]

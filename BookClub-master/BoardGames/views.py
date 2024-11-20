@@ -1,6 +1,6 @@
 from django.views.generic import DetailView, ListView
 
-from .models import Author, Book, Genre
+from .models import Author, Boardgame, Genre
 
 
 class AuthorDetailView(DetailView):
@@ -13,11 +13,11 @@ class AuthorListView(ListView):
 
 
 class BookDetailView(DetailView):
-    model = Book
+    model = Boardgame
 
 
 class BookListView(ListView):
-    model = Book
+    model = Boardgame
     paginate_by = 10
 
 
