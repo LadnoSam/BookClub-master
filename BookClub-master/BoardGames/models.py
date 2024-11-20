@@ -1,7 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.utils.timezone import now
 
 
-class Boardgame(models.Model):
+class Boardgame(models.Model):  
     title = models.CharField(max_length=200, db_index=True)
     subtitle = models.CharField(max_length=200, blank=True)
     author = models.ManyToManyField("Author")
@@ -19,7 +21,7 @@ class Boardgame(models.Model):
         return self.title + (f" ({str(self.pub_year)})" if self.pub_year else "")
 
 
-class Author(models.Model):
+class Author(models.Model):  
     last_name = models.CharField(max_length=100, db_index=True)
     given_name = models.CharField(max_length=100, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
@@ -36,8 +38,36 @@ class Author(models.Model):
         ordering = ["last_name", "given_name", "date_of_birth"]
 
 
-class Genre(models.Model):
+class Genre(models.Model):  
     name = models.CharField(max_length=100, db_index=True)
 
     def __str__(self):
         return self.name
+
+
+class BoardGame(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True, null=True)
+    characteristics = models.CharField(max_length=200, blank=True, null=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="owned_games")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Loan(models.Model):
+    board_game = models.ForeignKey(BoardGame, on_delete=models.CASCADE, related_name="loans")
+    borrower = models.ForeignKey(User, on_delete=models.CASCADE, related_name="borrowed_games")
+    loan_date = models.DateTimeField(default=now)
+    return_date = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.board_game.name} borrowed by {self.borrower.username}"
+
+    def save(self, *args, **kwargs):
+        active_loans = Loan.objects.filter(borrower=self.borrower, return_date__isnull=True)
+        if active_loans.count() >= 3:
+            raise ValueError("Cannot borrow more than 3 games simultaneously. Please return a game first.")
+        super().save(*args, **kwargs)
