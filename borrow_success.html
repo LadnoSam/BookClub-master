@@ -1,0 +1,9 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Borrow Successful{% endblock %}
+
+{% block content %}
+<h1>Game Borrowed Successfully</h1>
+<p>You have successfully borrowed the game. Enjoy playing!</p>
+<a class="btn btn-primary" href="{% url 'game_list' %}">Back to Game List</a>
+{% endblock %}
