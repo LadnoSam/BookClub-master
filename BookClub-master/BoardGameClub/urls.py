@@ -17,11 +17,14 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path("BoardGames/", include("BoardGames.urls")),
+    #path('admin/', admin.site.urls),
+    #path("BoardGames/", include("BoardGames.urls")),
 
     # Make sure to have users.urls above django.contrib.auth.urls so that custom auth views will
     # take precedence over default ones (in this case, setting a custom login template)
-    path("users/", include("users.urls")),
+    #path("users/", include("users.urls")),
     path("users/", include("django.contrib.auth.urls")),
+    path('admin/', admin.site.urls),  # This enables the admin site
+    path('authors/', include('boardgames.urls')),  # Example app URLs
+    path('BoardGames/', include('boardgames.urls')),  # Example app URLs
 ]
